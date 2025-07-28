@@ -1,0 +1,258 @@
+2025-07-28 20:57:37,653 - root - INFO - main:479 - Starting Linux AI Assistant
+2025-07-28 20:57:37,653 - root - INFO - main:480 - Model: mistral:7b-instruct-v0.3
+2025-07-28 20:57:37,653 - root - INFO - main:481 - Dry run: False
+2025-07-28 20:57:37,653 - root - INFO - main:482 - Max execution time: 30s
+2025-07-28 20:57:37,658 - __main__ - ERROR - _check_ollama_connection:89 - ✗ Cannot connect to Ollama: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/tags (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x1048dd160>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-07-28 20:57:37,658 - __main__ - ERROR - _check_ollama_connection:90 - Make sure Ollama is running with: ollama serve
+2025-07-28 20:58:07,418 - root - INFO - main:479 - Starting Linux AI Assistant
+2025-07-28 20:58:07,418 - root - INFO - main:480 - Model: mistral:7b-instruct-v0.3
+2025-07-28 20:58:07,418 - root - INFO - main:481 - Dry run: False
+2025-07-28 20:58:07,418 - root - INFO - main:482 - Max execution time: 30s
+2025-07-28 20:58:07,426 - __main__ - INFO - _check_ollama_connection:74 - ✓ Ollama connection successful
+2025-07-28 20:58:07,426 - __main__ - WARNING - _check_ollama_connection:81 - Model mistral:7b-instruct-v0.3 not found. Available models: []
+2025-07-28 20:58:07,426 - __main__ - INFO - _check_ollama_connection:82 - To install the model, run: ollama pull mistral:7b-instruct-v0.3
+2025-07-28 20:58:07,426 - __main__ - INFO - process_user_query:323 - Processing user query: Why is my cpu slow?
+2025-07-28 20:58:07,428 - __main__ - ERROR - generate_response:124 - Ollama API error: 404 - {"error":"model \"mistral:7b-instruct-v0.3\" not found, try pulling it first"}
+2025-07-28 20:58:07,428 - __main__ - ERROR - generate_response:132 - Error communicating with Ollama: Ollama API error: 404 - {"error":"model \"mistral:7b-instruct-v0.3\" not found, try pulling it first"}
+2025-07-28 20:58:07,428 - __main__ - ERROR - process_user_query:390 - Error processing query: Ollama API error: 404 - {"error":"model \"mistral:7b-instruct-v0.3\" not found, try pulling it first"}
+2025-07-28 21:05:25,439 - root - INFO - main:576 - Starting Linux AI Assistant
+2025-07-28 21:05:25,439 - root - INFO - main:577 - Model: mistral
+2025-07-28 21:05:25,439 - root - INFO - main:578 - Dry run: False
+2025-07-28 21:05:25,439 - root - INFO - main:579 - Max execution time: 30s
+2025-07-28 21:05:25,447 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:05:25,447 - __main__ - WARNING - _check_ollama_connection:82 - Model mistral not found. Available models: ['mistral:latest']
+2025-07-28 21:05:25,447 - __main__ - INFO - _check_ollama_connection:83 - To install the model, run: ollama pull mistral
+2025-07-28 21:05:25,448 - __main__ - INFO - process_user_query:420 - Processing user query: Why is my cpu slow?
+2025-07-28 21:06:45,125 - root - INFO - main:576 - Starting Linux AI Assistant
+2025-07-28 21:06:45,125 - root - INFO - main:577 - Model: mistral:latest
+2025-07-28 21:06:45,125 - root - INFO - main:578 - Dry run: False
+2025-07-28 21:06:45,125 - root - INFO - main:579 - Max execution time: 30s
+2025-07-28 21:06:45,132 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:06:45,132 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:06:45,132 - __main__ - INFO - process_user_query:420 - Processing user query: Why is my cpu slow?
+2025-07-28 21:07:42,603 - root - INFO - main:576 - Starting Linux AI Assistant
+2025-07-28 21:07:42,603 - root - INFO - main:577 - Model: mistral:latest
+2025-07-28 21:07:42,603 - root - INFO - main:578 - Dry run: False
+2025-07-28 21:07:42,603 - root - INFO - main:579 - Max execution time: 30s
+2025-07-28 21:07:42,607 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-07-28 21:07:42,610 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "GET /api/tags HTTP/1.1" 200 347
+2025-07-28 21:07:42,610 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:07:42,610 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:07:42,610 - __main__ - INFO - process_user_query:420 - Processing user query: Show me current CPU usage
+2025-07-28 21:07:42,610 - __main__ - DEBUG - generate_response:168 - Sending request to Ollama with 2 messages and 1 tools
+2025-07-28 21:07:42,610 - __main__ - DEBUG - generate_response:185 - Raw prompt: You are a helpful Linux system administrator assistant that can diagnose and solve problems by executing shell commands.
+
+When a user asks for help, think step by step about what commands might be needed to analyze their problem.
+Use the run_shell_command function to execute diagnostic commands and analyze their output.
+
+For system performance issues like CPU problems, typical diagnostic steps include:
+1. Check current CPU usage and load
+2. Identify processes consuming the most CPU
+3. Check for system bottlenecks
+4. Look for resource constraints
+5. Suggest solutions based on findings
+
+Guidelines:
+1. Always explain what you're doing before running commands
+2. Use appropriate commands for the specific problem
+3. Analyze command output and provide insights
+4. Suggest solutions based on diagnostic results
+5. Be thorough but efficient in your analysis
+
+You have access to the run_shell_command function to execute shell commands.
+
+[AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] Show me current CPU usage [/INST]
+2025-07-28 21:07:42,611 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-07-28 21:07:50,593 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 837
+2025-07-28 21:07:50,594 - __main__ - DEBUG - generate_response:198 - Ollama response:  To show the current CPU usage, we can use the `top` command with the `-b` and `-n1` options. This will display a list of running processes sorted by CPU usage and then exit after one refresh.
+
+Here's how you can run this command using the provided function:
+
+```javascript
+run_shell_command({"command": "top -bn1"})
+```
+
+This should output a list of running processes along with their CPU usage, memory consumption, and other relevant information. Analyze the output to determine if there are any processes consuming an excessive amount of CPU resources.
+2025-07-28 21:07:50,594 - __main__ - DEBUG - process_user_query:441 - Assistant response: To show the current CPU usage, we can use the `top` command with the `-b` and `-n1` options. This will display a list of running processes sorted by CPU usage and then exit after one refresh.
+
+Here's how you can run this command using the provided function:
+
+```javascript
+run_shell_command({"command": "top -bn1"})
+```
+
+This should output a list of running processes along with their CPU usage, memory consumption, and other relevant information. Analyze the output to determine if there are any processes consuming an excessive amount of CPU resources.
+2025-07-28 21:07:50,594 - __main__ - DEBUG - process_user_query:442 - Tool calls: None
+2025-07-28 21:09:11,636 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:09:11,636 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:09:11,637 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:09:11,637 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:09:11,639 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-07-28 21:09:11,642 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "GET /api/tags HTTP/1.1" 200 347
+2025-07-28 21:09:11,643 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:09:11,643 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:09:11,643 - __main__ - INFO - process_user_query:412 - Processing user query: Show me current CPU usage
+2025-07-28 21:09:11,643 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 2 messages and 1 tools
+2025-07-28 21:09:11,643 - __main__ - DEBUG - generate_response:177 - Raw prompt: [AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] Show me current CPU usage. Use the run_shell_command function to execute the necessary commands. [/INST]
+2025-07-28 21:09:11,643 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-07-28 21:09:18,385 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 638
+2025-07-28 21:09:18,386 - __main__ - DEBUG - generate_response:190 - Ollama response: [TOOL_CALLS] [{"name": "run_shell_command", "arguments": {"command": "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}]
+
+This command will provide you with the current CPU usage on your Linux system. The `top` command shows the processes running on the system, and we're using `grep`, `sed`, and `ps` to filter and format the output for better readability.
+2025-07-28 21:09:18,387 - __main__ - DEBUG - _parse_tool_calls:155 - Parsed 1 tool calls
+2025-07-28 21:09:18,387 - __main__ - DEBUG - process_user_query:433 - Assistant response: [{"name": "run_shell_command", "arguments": {"command": "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}]
+
+This command will provide you with the current CPU usage on your Linux system. The `top` command shows the processes running on the system, and we're using `grep`, `sed`, and `ps` to filter and format the output for better readability.
+2025-07-28 21:09:18,387 - __main__ - DEBUG - process_user_query:434 - Tool calls: [{'id': 'call_0', 'function': {'name': 'run_shell_command', 'arguments': {'command': "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}}]
+2025-07-28 21:09:18,387 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}
+2025-07-28 21:09:18,387 - __main__ - INFO - execute_command:253 - Executing command: top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/
+//g'
+2025-07-28 21:09:18,415 - __main__ - INFO - execute_command:312 - Command completed in 0.03s with exit code 1
+2025-07-28 21:09:18,415 - __main__ - DEBUG - execute_command:316 - STDERR: sed: 1: "N;N;s/
+//g": unterminated substitute pattern
+invalid option or syntax: -bn1
+top usage: top
+		[-a | -d | -e | -c <mode>]
+		[-F | -f]
+		[-h]
+		[-i <interval>]
+		[-l <samples>]
+		[-ncols <columns>]
+		[-o <key>] [-O <secondaryKey>]
+			keys: pid (default), command, cpu, cpu_me, cpu_others, csw,
+				time, threads, ports, mregion, mem, rprvt, purg, vsize, vprvt,
+				kprvt, kshrd, pgrp, ppid, state, uid, wq, faults, cow, user,
+				msgsent, msgrecv, sysbsd, sysmach, pageins, boosts, instrs, cycl...
+2025-07-28 21:09:18,415 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 4 messages and 1 tools
+2025-07-28 21:09:18,415 - __main__ - DEBUG - generate_response:177 - Raw prompt: [AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] Show me current CPU usage. Use the run_shell_command function to execute the necessary commands. [/INST]
+2025-07-28 21:09:18,417 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-07-28 21:09:30,423 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 1019
+2025-07-28 21:09:30,424 - __main__ - DEBUG - generate_response:190 - Ollama response: [TOOL_CALLS] [{"name": "run_shell_command", "arguments": {"command": "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}]
+
+This command will provide you with the current CPU usage on your Linux system. The output shows both user and system CPU usage percentages. Here's a breakdown of what each part does:
+
+- `top`: Displays system resource usage, including CPU, memory, and processes.
+- `-bn1`: Runs the top command in batch mode for just one iteration (to avoid infinite looping).
+- `grep 'Cpu(s)'`: Filters the output to only show lines containing "Cpu(s)", which are the CPU usage statistics.
+- `sed 'N;N;s/\n//g'`: Combines the three lines of output into one line and removes any newline characters (/n) for a cleaner display.
+2025-07-28 21:09:30,425 - __main__ - DEBUG - _parse_tool_calls:155 - Parsed 1 tool calls
+2025-07-28 21:09:48,729 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:09:48,730 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:09:48,730 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:09:48,730 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:09:48,736 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:09:48,736 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:09:48,736 - __main__ - INFO - process_user_query:412 - Processing user query: Show me disk usage
+2025-07-28 21:09:50,440 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'df -h'}
+2025-07-28 21:09:50,441 - __main__ - INFO - execute_command:253 - Executing command: df -h
+2025-07-28 21:09:50,467 - __main__ - INFO - execute_command:312 - Command completed in 0.03s with exit code 0
+2025-07-28 21:10:08,275 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:10:08,276 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:10:08,276 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:10:08,276 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:10:08,282 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:10:08,282 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:10:08,282 - __main__ - INFO - process_user_query:412 - Processing user query: What processes are using the most memory?
+2025-07-28 21:10:14,331 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'top -bn1 | grep Mem'}
+2025-07-28 21:10:14,332 - __main__ - INFO - execute_command:253 - Executing command: top -bn1 | grep Mem
+2025-07-28 21:10:14,365 - __main__ - INFO - execute_command:312 - Command completed in 0.03s with exit code 1
+2025-07-28 21:10:34,598 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:10:34,598 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:10:34,598 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:10:34,598 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:10:34,604 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:10:34,604 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:10:34,604 - __main__ - INFO - process_user_query:412 - Processing user query: Find large files in the current directory
+2025-07-28 21:10:41,423 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'du -sh * | sort -h | head -10'}
+2025-07-28 21:10:41,424 - __main__ - INFO - execute_command:253 - Executing command: du -sh * | sort -h | head -10
+2025-07-28 21:10:41,444 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:10:51,822 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:10:51,822 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:10:51,822 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:10:51,822 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:10:51,828 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:10:51,828 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:10:51,828 - __main__ - INFO - process_user_query:412 - Processing user query: Check the system uptime
+2025-07-28 21:10:54,638 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'uptime'}
+2025-07-28 21:10:54,638 - __main__ - INFO - execute_command:253 - Executing command: uptime
+2025-07-28 21:10:54,656 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:11:20,141 - root - INFO - main:568 - Starting Linux AI Assistant
+2025-07-28 21:11:20,141 - root - INFO - main:569 - Model: mistral:latest
+2025-07-28 21:11:20,141 - root - INFO - main:570 - Dry run: False
+2025-07-28 21:11:20,141 - root - INFO - main:571 - Max execution time: 30s
+2025-07-28 21:11:20,148 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:11:20,148 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:11:20,148 - __main__ - INFO - process_user_query:412 - Processing user query: Show me disk usage
+2025-07-28 21:11:21,855 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'df -h'}
+2025-07-28 21:11:21,855 - __main__ - INFO - execute_command:253 - Executing command: df -h
+2025-07-28 21:11:21,875 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:11:23,293 - __main__ - INFO - process_user_query:412 - Processing user query: Find Python files
+2025-07-28 21:11:27,236 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': "find / -name '*.py' -type f"}
+2025-07-28 21:11:27,236 - __main__ - INFO - execute_command:253 - Executing command: find / -name '*.py' -type f
+2025-07-28 21:11:57,244 - __main__ - WARNING - execute_command:295 - Command timed out after 30 seconds
+2025-07-28 21:11:57,252 - __main__ - INFO - execute_command:312 - Command completed in 30.02s with exit code -1
+2025-07-28 21:12:01,453 - __main__ - WARNING - _parse_tool_calls:153 - Failed to parse tool call: [{"name": "run_shell_command", "arguments": {"command": "find / -type f \( -iname '*.py' \) -print"}}], error: Invalid \escape: line 1 column 73 (char 72)
+2025-07-28 21:16:44,435 - root - INFO - main:610 - Starting Linux AI Assistant
+2025-07-28 21:16:44,435 - root - INFO - main:611 - Model: mistral:latest
+2025-07-28 21:16:44,435 - root - INFO - main:612 - Dry run: False
+2025-07-28 21:16:44,435 - root - INFO - main:613 - Max execution time: 30s
+2025-07-28 21:16:44,445 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:16:44,445 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:16:44,445 - __main__ - INFO - process_user_query:412 - Processing user query: Show me disk usage
+2025-07-28 21:16:46,541 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'df -h'}
+2025-07-28 21:16:46,541 - __main__ - INFO - execute_command:253 - Executing command: df -h
+2025-07-28 21:16:46,562 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:17:36,962 - root - INFO - main:610 - Starting Linux AI Assistant
+2025-07-28 21:17:36,963 - root - INFO - main:611 - Model: mistral:latest
+2025-07-28 21:17:36,963 - root - INFO - main:612 - Dry run: False
+2025-07-28 21:17:36,963 - root - INFO - main:613 - Max execution time: 30s
+2025-07-28 21:17:36,969 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:17:36,969 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:17:36,969 - __main__ - INFO - process_user_query:412 - Processing user query: What processes are using the most memory?
+2025-07-28 21:17:43,840 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'top -bn1 | grep Mem'}
+2025-07-28 21:17:43,840 - __main__ - INFO - execute_command:253 - Executing command: top -bn1 | grep Mem
+2025-07-28 21:17:43,866 - __main__ - INFO - execute_command:312 - Command completed in 0.03s with exit code 1
+2025-07-28 21:26:51,861 - root - INFO - main:672 - Starting Linux AI Assistant
+2025-07-28 21:26:51,861 - root - INFO - main:673 - Model: mistral:latest
+2025-07-28 21:26:51,861 - root - INFO - main:674 - Dry run: False
+2025-07-28 21:26:51,861 - root - INFO - main:675 - Max execution time: 30s
+2025-07-28 21:26:51,867 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:26:51,867 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:26:51,867 - __main__ - INFO - process_user_query:412 - Processing user query: Why is my system running slow?
+2025-07-28 21:27:05,328 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'top -bn1'}
+2025-07-28 21:27:05,329 - __main__ - INFO - execute_command:253 - Executing command: top -bn1
+2025-07-28 21:27:05,351 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 1
+2025-07-28 21:27:05,351 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'ps aux'}
+2025-07-28 21:27:05,351 - __main__ - INFO - execute_command:253 - Executing command: ps aux
+2025-07-28 21:27:05,412 - __main__ - INFO - execute_command:312 - Command completed in 0.06s with exit code 0
+2025-07-28 21:32:30,362 - root - INFO - main:652 - Starting Linux AI Assistant
+2025-07-28 21:32:30,362 - root - INFO - main:653 - Model: mistral:latest
+2025-07-28 21:32:30,362 - root - INFO - main:654 - Dry run: False
+2025-07-28 21:32:30,362 - root - INFO - main:655 - Max execution time: 30s
+2025-07-28 21:32:30,371 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:32:30,371 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:32:30,371 - __main__ - INFO - process_user_query:412 - Processing user query: Show me disk usage
+2025-07-28 21:32:33,198 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'df -h'}
+2025-07-28 21:32:33,198 - __main__ - INFO - execute_command:253 - Executing command: df -h
+2025-07-28 21:32:33,220 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:35:50,522 - root - INFO - main:676 - Starting Linux AI Assistant
+2025-07-28 21:35:50,522 - root - INFO - main:677 - Model: mistral:latest
+2025-07-28 21:35:50,522 - root - INFO - main:678 - Dry run: False
+2025-07-28 21:35:50,522 - root - INFO - main:679 - Max execution time: 30s
+2025-07-28 21:35:50,530 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:35:50,530 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:35:50,530 - __main__ - INFO - process_user_query:412 - Processing user query: Show me disk usage
+2025-07-28 21:35:53,000 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'df -h'}
+2025-07-28 21:35:53,000 - __main__ - INFO - execute_command:253 - Executing command: df -h
+2025-07-28 21:35:53,018 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 0
+2025-07-28 21:36:41,083 - root - INFO - main:676 - Starting Linux AI Assistant
+2025-07-28 21:36:41,083 - root - INFO - main:677 - Model: mistral:latest
+2025-07-28 21:36:41,083 - root - INFO - main:678 - Dry run: False
+2025-07-28 21:36:41,083 - root - INFO - main:679 - Max execution time: 30s
+2025-07-28 21:36:41,089 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-07-28 21:36:41,089 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-07-28 21:36:41,089 - __main__ - INFO - process_user_query:412 - Processing user query: Find large files taking up space
+2025-07-28 21:36:46,619 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': 'du -sh / * | sort -h | tail -10'}
+2025-07-28 21:36:46,619 - __main__ - INFO - execute_command:253 - Executing command: du -sh / * | sort -h | tail -10
+2025-07-28 21:37:16,625 - __main__ - WARNING - execute_command:295 - Command timed out after 30 seconds
+2025-07-28 21:37:16,627 - __main__ - INFO - execute_command:312 - Command completed in 30.01s with exit code -1
