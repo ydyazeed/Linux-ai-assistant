@@ -5,7 +5,7 @@
 
 **nudu** (pronounced "new-do") is a simple, powerful AI assistant for Linux system administration. Ask questions in natural language and get intelligent answers with real command execution.
 
-## ✨ What makes nudu special?
+## ✨ Features
 
 - 🗣️ **Natural language interface**: Just ask "why is my CPU slow?" instead of remembering complex commands
 - 🔧 **Real command execution**: Actually runs diagnostic commands and analyzes the output
@@ -14,98 +14,15 @@
 - 🚀 **Easy installation**: One-line install, works anywhere
 - 🔒 **Completely offline**: Uses local Ollama, no data sent to external servers
 
-## 🚀 Quick Start
+## 🚀 Installation
 
-### Installation
-
-```bash
-# Download and install
-curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash
-
-# Or for user-only installation (no sudo required)
-curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash -s -- --user
-```
-
-### First run
-
-```bash
-# Start Ollama (if not already running)
-ollama serve
-
-# Pull the AI model
-ollama pull mistral
-
-# Try it out!
-nudu why is my cpu slow?
-nudu show me disk usage
-nudu find large files
-```
-
-## 💬 Example Conversations
-
-### System Performance
-```bash
-$ nudu why is my system running slow?
-
-🔍 Investigating: why is my system running slow?
-Running: `ps aux --sort=-%cpu | head -10`
-📄 Output summary: [shows actual process list]
-
-📋 Summary:
-Your system has several high-CPU processes: chrome (45% CPU), node (23% CPU). 
-The main issue is Chrome with 8 tabs consuming 4.2GB RAM and 45% CPU.
-Immediate action: Close unnecessary browser tabs or restart Chrome.
-```
-
-### Disk Usage Analysis
-```bash
-$ nudu find large files taking up space
-
-🔍 Investigating: find large files taking up space
-Running: `du -sh /home/* | sort -h | tail -10`
-📄 Output summary: [shows actual large directories]
-
-📋 Summary:
-Largest directories: ~/Downloads (15GB), ~/.cache (8GB), ~/Videos (12GB).
-The Downloads folder contains many old files from 2023.
-Immediate action: Clean up Downloads folder and clear browser cache.
-```
-
-### Service Management
-```bash
-$ nudu check if nginx is running
-
-🔍 Investigating: check if nginx is running
-Running: `systemctl status nginx`
-📄 Output summary: [shows service status]
-
-📋 Summary:
-Nginx is active and running on port 80. Last started 3 days ago.
-Currently serving 2 virtual hosts with no recent errors.
-No action needed: Service is healthy.
-```
-
-## 📋 Available Commands
-
-nudu can help you with:
-
-- **Performance**: "why is my cpu slow?", "what's using memory?", "system running slow"
-- **Disk Space**: "show disk usage", "find large files", "where is my disk space?"
-- **Processes**: "what processes are running?", "kill process using port 8080"
-- **Services**: "is nginx running?", "restart apache", "check systemd services"
-- **Network**: "show network connections", "what's using port 80?", "check internet connection"
-- **Logs**: "show recent errors", "check system logs", "what happened at 2pm?"
-- **Files**: "find files named config", "show recent downloads", "what changed today?"
-
-## 🛠️ Installation Options
-
-### Automatic Installation (Recommended)
+### Quick Install
 ```bash
 # System-wide installation (requires sudo)
-curl -sSL https://github.com/ydyazeed/Linux-ai-assistant/raw/main/install.sh | sudo bash
+curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | sudo bash
 
 # User installation (no sudo required)
-curl -sSL https://github.com/ydyazeed/Linux-ai-assistant/raw/main/install.sh | bash -s -- --user
+curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash -s -- --user
 ```
 
 ### Manual Installation
@@ -122,149 +39,123 @@ sudo ./install.sh
 # OR for user installation: ./install.sh --user
 ```
 
-### Docker Installation
+## 🎯 Usage
+
+### Setup
 ```bash
-# Coming soon!
-docker run -it nudu/nudu why is my cpu slow?
+# 1. Start Ollama (if not already running)
+ollama serve
+
+# 2. Pull the AI model
+ollama pull mistral
+
+# 3. Ask your questions!
+nudu why is my cpu slow?
 ```
 
-## 🔧 Configuration
-
-### Environment Variables
+### Basic Commands
 ```bash
-export NUDU_MODEL="mistral:latest"     # Default AI model
-export NUDU_LOG_LEVEL="WARNING"       # Logging level
-export NUDU_PYTHON="python3"          # Python executable
+nudu <your question>
+nudu --dry-run <question>    # Test without executing commands
+nudu --help                  # Show help
 ```
 
-### Custom Models
-```bash
-# Use a different model
-nudu --model llama2 show me disk usage
+## 💬 Usage Examples
 
-# Install additional models
-ollama pull llama2
-ollama pull codellama
+### Example 1: Simple Disk Usage Check
+```bash
+$ nudu show me disk usage
+
+🔍 Investigating: show me disk usage
+Running: `df -h`
+📄 Output summary:
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        50G   35G   12G  75% /
+/dev/sda2       100G   80G   15G  85% /home
+
+📋 Summary:
+Your /home partition is 85% full (80GB used of 100GB). The root partition is 75% full.
+Main concern: /home partition is approaching capacity.
+Immediate action: Clean up files in /home directory or check for large files.
+```
+
+### Example 2: CPU Performance Investigation (Multiple Commands)
+```bash
+$ nudu why is my system running slow?
+
+🔍 Investigating: why is my system running slow?
+Running: `top -bn1 | head -20`
+📄 Output summary:
+%Cpu(s): 89.3 us,  8.2 sy,  0.0 ni,  2.1 id,  0.4 wa
+Tasks: 312 total,   3 running, 309 sleeping
+  PID USER      %CPU %MEM    TIME+ COMMAND
+ 1234 user      45.2  8.1   5:23.45 chrome
+ 5678 user      23.1  4.2   2:15.32 node
+
+Running: `ps aux --sort=-%cpu | head -10`
+📄 Output summary:
+USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+user      1234 45.2  8.1 2547384 515184 ?      Sl   09:15   5:23 /opt/google/chrome/chrome
+user      5678 23.1  4.2 1245392 267144 ?      Sl   09:22   2:15 node server.js
+
+Running: `free -h`
+📄 Output summary:
+              total        used        free      shared  buff/cache   available
+Mem:           16Gi        12Gi        1.2Gi       856Mi        2.8Gi        2.1Gi
+Swap:         8.0Gi       3.2Gi        4.8Gi
+
+Running: `iostat -x 1 1`
+📄 Output summary:
+Device            r/s     w/s     rkB/s     wkB/s   %util
+sda              45.2    12.8    1245.6     256.4    78.5
+
+📋 Summary:
+Your system slowness is caused by multiple factors:
+1. Chrome browser consuming 45% CPU and 8GB RAM with multiple tabs
+2. Node.js server using additional 23% CPU 
+3. High memory usage (12GB/16GB used, only 1.2GB free)
+4. Disk I/O at 78% utilization indicating storage bottleneck
+
+Immediate actions:
+- Close unnecessary Chrome tabs or restart browser
+- Consider restarting the Node.js server if not critical
+- Free up memory by closing unused applications
+- Check for background processes writing to disk
 ```
 
 ## 🛡️ Safety Features
 
-nudu includes multiple safety measures:
-
-- **Command filtering**: Blocks potentially dangerous commands (`rm -rf`, `dd`, etc.)
-- **Execution timeout**: Commands timeout after 30 seconds by default
-- **Dry run mode**: Test commands without execution (`nudu --dry-run <question>`)
-- **User confirmation**: Prompts for dangerous operations
+- **Command filtering**: Blocks dangerous commands (`rm -rf`, `dd`, etc.)
+- **Execution timeout**: Commands timeout after 30 seconds
+- **Dry run mode**: Test commands without execution
 - **Audit logging**: All commands logged for review
-
-### Blocked Commands
-For safety, these commands are blocked:
-- File deletion: `rm`, `rmdir`
-- Disk operations: `dd`, `mkfs`, `fdisk`
-- System control: `shutdown`, `reboot`, `halt`
-- Process control: `kill`, `killall`, `pkill`
-- Privilege escalation: `sudo`, `su`
 
 ## 🐛 Troubleshooting
 
-### Common Issues
-
 **"Cannot connect to Ollama"**
 ```bash
-# Start Ollama
 ollama serve
-
-# Check if accessible
-curl http://localhost:11434/api/tags
 ```
 
 **"Model not found"**
 ```bash
-# Pull the model
 ollama pull mistral
-
-# List available models
-ollama list
 ```
 
 **"Command not found: nudu"**
 ```bash
-# Check installation
-which nudu
-
-# Reinstall if needed
-curl -sSL https://github.com/ydyazeed/Linux-ai-assistant/raw/main/install.sh | bash -s -- --user
+# Reinstall
+curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash -s -- --user
 ```
-
-**"Permission denied"**
-```bash
-# For user installation
-./install.sh --user
-
-# Check PATH
-echo $PATH | grep -o '[^:]*local/bin'
-```
-
-### Debug Mode
-```bash
-# Enable detailed logging
-nudu --debug show me disk usage
-
-# Check logs
-tail -f ~/.local/lib/nudu/logs/linux_assistant.log
-```
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how to get started:
-
-### Development Setup
-```bash
-# Clone the repository
-git clone https://github.com/ydyazeed/Linux-ai-assistant.git
-cd Linux-ai-assistant
-
-# Install development dependencies
-pip3 install -r requirements.txt
-
-# Run tests
-python3 test_assistant.py
-
-# Run the assistant locally
-python3 linux_ai_assistant.py --query "test query"
-```
-
-### Guidelines
-1. 🧪 **Add tests** for new features
-2. 📝 **Update documentation** for changes
-3. 🛡️ **Maintain safety measures** for new commands
-4. 🎯 **Keep it simple** - focus on user experience
-5. 📊 **Test with real systems** before submitting
-
-### Areas for Contribution
-- 🌐 **Multi-language support**
-- 🐳 **Docker integration**
-- 📱 **Mobile/web interface**
-- 🧠 **Additional AI models**
-- 🔍 **Enhanced diagnostics**
-- 📚 **Documentation improvements**
 
 ## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🙏 Acknowledgments
-
-- [Ollama](https://ollama.ai/) for local AI model hosting
-- [Mistral AI](https://mistral.ai/) for the excellent language model
-- Linux community for inspiration and tools
-
 ## 📞 Support
 
 - 🐛 **Issues**: [GitHub Issues](https://github.com/ydyazeed/Linux-ai-assistant/issues)
-- 💬 **Discussions**: [GitHub Discussions](https://github.com/ydyazeed/Linux-ai-assistant/discussions)
 - 📧 **Email**: ydyazeed@gmail.com
-- 📺 **Documentation**: [Wiki](https://github.com/ydyazeed/Linux-ai-assistant/wiki)
 
 ---
 
