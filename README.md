@@ -188,6 +188,45 @@ Immediate actions:
 - Check for background processes writing to disk
 ```
 
+### Example 3: Web Server Troubleshooting (Diagnostic Loop)
+```bash
+$ nudu why is my server not running?
+
+🔍 Investigating: why is my server not running?
+Running: `ps aux | grep nginx`
+📄 Output summary:
+user      1234  0.0  0.1  12345  1234 ?        S    10:15   0:00 grep nginx
+
+Running: `systemctl status nginx`
+📄 Output summary:
+● nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: inactive (dead) since Fri 2024-01-15 10:10:32 UTC; 5min ago
+   Process: 5678 ExecStop=/sbin/start-stop-daemon --quiet --stop --retry QUIT/5 --pidfile /run/nginx.pid (code=exited, status=0/SUCCESS)
+
+Running: `nginx -t`
+📄 Output summary:
+nginx: [emerg] bind() to 0.0.0.0:80 failed (98: Address already in use)
+nginx: configuration test failed
+
+Running: `netstat -tulpn | grep :80`
+📄 Output summary:
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      3456/apache2
+
+📋 Summary:
+Your nginx server is not running because:
+1. Nginx service is currently inactive (stopped)
+2. Configuration test fails due to port 80 already in use
+3. Apache2 is running on port 80 (PID 3456), conflicting with nginx
+4. Nginx was stopped 5 minutes ago but the port conflict prevents restart
+
+Immediate actions:
+- Stop Apache2: sudo systemctl stop apache2
+- OR configure nginx to use a different port (e.g., 8080)
+- Then start nginx: sudo systemctl start nginx
+- Verify with: sudo systemctl status nginx
+```
+
 ## 🛡️ Safety Features
 
 - **Command filtering**: Blocks dangerous commands (`rm -rf`, `dd`, etc.)
