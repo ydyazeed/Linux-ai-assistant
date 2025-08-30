@@ -12,7 +12,6 @@ import sys
 import os
 import signal
 import re
-import platform
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 import requests
@@ -340,44 +339,29 @@ class LinuxAIAssistant:
         self.ollama_client = OllamaClient(model=model)
         self.shell_executor = ShellCommandExecutor(dry_run=dry_run, max_execution_time=max_execution_time)
         
-        # Detect operating system
-        self.os_type = platform.system().lower()
-        self.is_linux = self.os_type == 'linux'
-        self.is_macos = self.os_type == 'darwin'
-        self.is_windows = self.os_type == 'windows'
-        
-        self.logger.info(f"Detected OS: {self.os_type}")
-        
-        # Create OS-specific system prompt
-        os_commands = self._get_os_specific_commands()
-        self.system_prompt = f"""You are a helpful system administrator assistant that can diagnose and solve problems by executing shell commands.
-
-IMPORTANT: You are running on {self.os_type.upper()}.
-
-OS-Specific Command Guidelines:
-{os_commands}
+        self.system_prompt = """You are a helpful Linux system administrator assistant that can diagnose and solve problems by executing shell commands.
 
 When a user asks for help, think step by step about what commands might be needed to analyze their problem.
 Use the run_shell_command function to execute diagnostic commands and analyze their output.
 
-For system performance issues like CPU problems, typical diagnostic steps include:
-1. Check current CPU usage and load
-2. Identify processes consuming the most CPU
-3. Check for system bottlenecks
-4. Look for resource constraints
-5. Suggest solutions based on findings
+COMMAND SELECTION GUIDELINES:
+1. Use universal Unix/Linux commands that work across distributions
+2. For CPU usage: use 'ps aux' instead of 'top -bn1' for better compatibility
+3. For memory: use 'ps aux' and 'cat /proc/meminfo' (if available)
+4. For disk: use 'df -h', 'du -sh'
+5. For processes: use 'ps aux --sort=-%cpu' or 'ps aux --sort=-%mem'
 
-Guidelines:
-1. Always explain what you're doing before running commands
-2. Use OS-appropriate commands based on the detected platform
-3. CRITICAL: Analyze ONLY the actual command output - NEVER make up data, numbers, or percentages
-4. If a command fails, try alternative commands for the same information
-5. If you see "Command failed", suggest and try the recommended alternatives
-6. For memory on macOS, use: vm_stat, top -l1, or sysctl hw.memsize
-7. For CPU on macOS, use: top -l1 -o cpu, ps aux | sort -k3 -nr
-8. Quote exact text from command output when referencing data
-9. Suggest solutions based on diagnostic results
-10. Be thorough but efficient in your analysis
+ERROR HANDLING:
+- If a command fails, ALWAYS try a simpler alternative using run_shell_command
+- If /proc files don't exist, use basic commands like 'ps aux'
+- When a command fails, suggest and execute a fallback command immediately
+
+FUNCTION CALLING FORMAT:
+- ALWAYS use the [TOOL_CALLS] format for function calls
+- When suggesting next commands, IMMEDIATELY execute them with run_shell_command
+- Never suggest commands without executing them
+
+CRITICAL: Only analyze actual command outputs. Never invent data, percentages, or process names.
 
 You have access to the run_shell_command function to execute shell commands."""
 
@@ -403,132 +387,14 @@ You have access to the run_shell_command function to execute shell commands."""
         
         self.conversation_history = []
         
-    def _get_os_specific_commands(self) -> str:
-        """Get OS-specific command guidelines"""
-        if self.is_linux:
-            return """
-LINUX Commands:
-- CPU info: top -bn1, htop, ps aux --sort=-%cpu
-- Memory: free -h, cat /proc/meminfo
-- Disk usage: df -h, du -sh, lsblk
-- Network: netstat -tulpn, ss -tulpn
-- Processes: ps aux, pgrep, pidof
-- System info: uname -a, lscpu, /proc/cpuinfo
-- Services: systemctl status, service --status-all
-- Logs: journalctl, dmesg, /var/log/*
-"""
-        elif self.is_macos:
-            return """
-MACOS Commands:
-- CPU info: top -l1, ps aux, activity monitor via CLI
-- Memory: vm_stat, top -l1, ps aux
-- Disk usage: df -h, du -sh, diskutil list
-- Network: netstat -rn, lsof -i
-- Processes: ps aux, pgrep, launchctl list
-- System info: uname -a, sysctl -a, system_profiler
-- Services: launchctl list, brew services list
-- Logs: log show, console logs, /var/log/*
-- Activity: top -l1 -s0 (snapshot), iostat, vm_stat
-"""
-        else:
-            return """
-GENERIC UNIX Commands:
-- Basic: ps aux, df -h, du -sh, uname -a
-- Use portable commands when possible
-- Check command availability before use
-"""
-        
     def run_shell_command_tool(self, command: str) -> str:
-        """Tool function for executing shell commands with fallback suggestions"""
-        # Pre-process command for OS compatibility
-        original_command = command
-        command = self._adapt_command_for_os(command)
-        
-        if command != original_command:
-            self.logger.info(f"Adapted command from '{original_command}' to '{command}' for {self.os_type}")
-        
+        """Tool function for executing shell commands"""
         result = self.shell_executor.execute_command(command)
         
         if result["success"]:
             return f"Command executed successfully (exit code: {result['exit_code']}, time: {result['execution_time']:.2f}s):\n\nSTDOUT:\n{result['stdout']}\n\nSTDERR:\n{result['stderr']}"
         else:
-            # Suggest alternatives for common failed commands
-            alternatives = self._get_command_alternatives(original_command)
-            alt_text = f"\n\nSUGGESTED ALTERNATIVES:\n{alternatives}" if alternatives else ""
-            
-            return f"Command failed (exit code: {result['exit_code']}, time: {result['execution_time']:.2f}s):\n\nSTDOUT:\n{result['stdout']}\n\nSTDERR:\n{result['stderr']}{alt_text}"
-    
-    def _adapt_command_for_os(self, command: str) -> str:
-        """Automatically adapt commands for the current OS"""
-        cmd_lower = command.lower().strip()
-        
-        if self.is_macos:
-            # Memory commands
-            if cmd_lower == 'free -h' or cmd_lower == 'free':
-                return 'vm_stat'
-            elif 'free' in cmd_lower and '-h' in cmd_lower:
-                return 'vm_stat'
-            
-            # CPU process listing
-            elif cmd_lower.startswith('top -bn1'):
-                return 'top -l1 -o cpu'
-            elif 'top -bn1' in cmd_lower:
-                return cmd_lower.replace('top -bn1', 'top -l1')
-            
-            # Process sorting
-            elif 'ps aux --sort=-%cpu' in cmd_lower:
-                return 'ps aux | sort -k3 -nr'
-            
-            # System info
-            elif cmd_lower == 'lscpu':
-                return 'sysctl -n machdep.cpu.brand_string'
-            
-            # Service management
-            elif cmd_lower.startswith('systemctl'):
-                return 'launchctl list'
-            
-        return command
-    
-    def _get_command_alternatives(self, failed_command: str) -> str:
-        """Get alternative commands based on the failed command and OS"""
-        cmd_lower = failed_command.lower()
-        
-        # Common command mappings
-        alternatives = []
-        
-        # Memory commands
-        if 'free' in cmd_lower and self.is_macos:
-            alternatives.append("vm_stat")
-            alternatives.append("top -l1 | grep PhysMem")
-            alternatives.append("sysctl hw.memsize")
-        
-        # Process listing with CPU sort
-        if 'top -bn1' in cmd_lower and self.is_macos:
-            alternatives.append("top -l1 -o cpu")
-            alternatives.append("ps aux | head -20")
-            alternatives.append("ps aux | sort -k3 -nr | head -10")
-        
-        # System stats
-        if 'iostat' in cmd_lower and self.is_macos:
-            alternatives.append("iostat 1 1")
-            alternatives.append("sar -u 1 1")
-        
-        # Network
-        if 'netstat -tulpn' in cmd_lower and self.is_macos:
-            alternatives.append("netstat -rn")
-            alternatives.append("lsof -i")
-        
-        # Service management
-        if 'systemctl' in cmd_lower and self.is_macos:
-            alternatives.append("launchctl list")
-            alternatives.append("brew services list")
-        
-        # Journal logs
-        if 'journalctl' in cmd_lower and self.is_macos:
-            alternatives.append("log show --last 1h")
-            alternatives.append("console")
-        
-        return "\n".join([f"- {alt}" for alt in alternatives]) if alternatives else ""
+            return f"Command failed (exit code: {result['exit_code']}, time: {result['execution_time']:.2f}s):\n\nSTDOUT:\n{result['stdout']}\n\nSTDERR:\n{result['stderr']}"
     
     def handle_function_call(self, function_call: Dict) -> str:
         """Handle function calls from the LLM"""
@@ -614,12 +480,6 @@ GENERIC UNIX Commands:
                                     print("📄 Command executed")
                             else:
                                 print(f"❌ Command failed")
-                                # Show alternatives if command failed
-                                if "SUGGESTED ALTERNATIVES:" in function_result:
-                                    alt_start = function_result.find("SUGGESTED ALTERNATIVES:\n") + 24
-                                    alternatives = function_result[alt_start:].strip()
-                                    if alternatives:
-                                        print(f"💡 Try these instead:\n{alternatives}")
                             
                             # Store results for analysis
                             investigation_results.append({
@@ -684,25 +544,40 @@ Current findings summary: {len(investigation_results)} commands executed so far.
         
         # Generate concise final analysis
         if investigation_results:
-            analysis_prompt = f"""Based on all the diagnostic commands executed, provide a CONCISE and CLEAR answer to the user's question: "{user_input}"
+            # Extract only the actual stdout from commands for cleaner analysis
+            command_outputs = []
+            for r in investigation_results:
+                if "STDOUT:" in r['result']:
+                    stdout_start = r['result'].find("STDOUT:\n") + 8
+                    stderr_start = r['result'].find("\n\nSTDERR:")
+                    if stderr_start > stdout_start:
+                        stdout = r['result'][stdout_start:stderr_start].strip()
+                    else:
+                        stdout = r['result'][stdout_start:].strip()
+                    
+                    command_outputs.append({
+                        'command': r['command'],
+                        'output': stdout if stdout else "No output"
+                    })
+                else:
+                    command_outputs.append({
+                        'command': r['command'],
+                        'output': "Command failed"
+                    })
+            
+            analysis_prompt = f"""You are analyzing command outputs to answer: "{user_input}"
 
-Commands executed and their outputs:
-{chr(10).join([f"Command: {r['command']}" + chr(10) + f"Result: {r['result'][:500]}..." for r in investigation_results])}
+ACTUAL COMMAND OUTPUTS (DO NOT MAKE UP ANY DATA):
+{chr(10).join([f"Command: {cmd['command']}\nOutput: {cmd['output'][:300]}" + ("..." if len(cmd['output']) > 300 else "") for cmd in command_outputs])}
 
 CRITICAL INSTRUCTIONS:
-- ONLY use data that actually appears in the command outputs above
-- DO NOT make up numbers, percentages, file sizes, or process names
-- If no useful data was returned, say so clearly
-- Quote exact text from the outputs when referencing data
-- If commands failed, acknowledge the failure and suggest alternatives
+- ONLY use the actual data shown above
+- DO NOT invent numbers, percentages, or process names
+- If output is empty or unclear, say so
+- If commands failed, mention that
+- Be specific about what the actual output shows
 
-Please provide:
-1. A brief summary of what the commands actually returned (2-3 sentences max)
-2. The specific answer based ONLY on data that actually appears in the outputs
-3. Any immediate action based on what the real data shows (if applicable)
-
-Do not invent data - only use what's actually shown in the command outputs above.
-"""
+Provide a brief summary (2-3 sentences) based ONLY on what you can see in the actual outputs above."""
             
             self.conversation_history.append({
                 "role": "user",

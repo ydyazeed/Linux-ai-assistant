@@ -256,3 +256,143 @@ This command will provide you with the current CPU usage on your Linux system. T
 2025-07-28 21:36:46,619 - __main__ - INFO - execute_command:253 - Executing command: du -sh / * | sort -h | tail -10
 2025-07-28 21:37:16,625 - __main__ - WARNING - execute_command:295 - Command timed out after 30 seconds
 2025-07-28 21:37:16,627 - __main__ - INFO - execute_command:312 - Command completed in 30.01s with exit code -1
+2025-08-30 15:41:14,609 - __main__ - ERROR - _check_ollama_connection:90 - ✗ Cannot connect to Ollama: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/tags (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x105bad2b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-30 15:41:14,610 - __main__ - ERROR - _check_ollama_connection:91 - Make sure Ollama is running with: ollama serve
+2025-08-30 15:58:10,064 - __main__ - ERROR - _check_ollama_connection:90 - ✗ Cannot connect to Ollama: HTTPConnectionPool(host='localhost', port=11434): Max retries exceeded with url: /api/tags (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x103b9d2b0>: Failed to establish a new connection: [Errno 61] Connection refused'))
+2025-08-30 15:58:10,064 - __main__ - ERROR - _check_ollama_connection:91 - Make sure Ollama is running with: ollama serve
+2025-08-30 16:10:27,598 - __main__ - ERROR - generate_response:214 - Error communicating with Ollama: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-08-30 16:10:27,599 - __main__ - ERROR - process_user_query:537 - Error in iteration 1: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+2025-08-30 16:18:30,629 - __main__ - WARNING - execute_command:295 - Command timed out after 30 seconds
+2025-08-30 16:53:27,834 - __main__ - WARNING - execute_command:259 - Command blocked for safety: Command 'sudo' is potentially dangerous
+2025-08-30 16:53:27,835 - __main__ - WARNING - execute_command:259 - Command blocked for safety: Command 'sudo' is potentially dangerous
+2025-08-30 16:59:18,867 - root - INFO - main:676 - Starting Linux AI Assistant
+2025-08-30 16:59:18,868 - root - INFO - main:677 - Model: mistral:latest
+2025-08-30 16:59:18,868 - root - INFO - main:678 - Dry run: False
+2025-08-30 16:59:18,868 - root - INFO - main:679 - Max execution time: 30s
+2025-08-30 16:59:18,871 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-08-30 16:59:18,872 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "GET /api/tags HTTP/1.1" 200 347
+2025-08-30 16:59:18,872 - __main__ - INFO - _check_ollama_connection:75 - ✓ Ollama connection successful
+2025-08-30 16:59:18,872 - __main__ - INFO - _check_ollama_connection:85 - ✓ Model mistral:latest is available
+2025-08-30 16:59:18,872 - __main__ - INFO - process_user_query:412 - Processing user query: check current CPU usage
+2025-08-30 16:59:18,872 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 2 messages and 1 tools
+2025-08-30 16:59:18,872 - __main__ - DEBUG - generate_response:177 - Raw prompt: [AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] check current CPU usage. Use the run_shell_command function to execute the necessary commands. [/INST]
+2025-08-30 16:59:18,873 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-08-30 16:59:24,042 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 577
+2025-08-30 16:59:24,043 - __main__ - DEBUG - generate_response:190 - Ollama response: [TOOL_CALLS] [{"name": "run_shell_command", "arguments": {"command": "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}]
+
+This command will provide you with the current CPU usage on your Linux system. The output will show the percentage of CPU usage for user space, kernel space, and idle processes.
+2025-08-30 16:59:24,043 - __main__ - DEBUG - _parse_tool_calls:155 - Parsed 1 tool calls
+2025-08-30 16:59:24,043 - __main__ - DEBUG - process_user_query:443 - Iteration 1 - Assistant response: [{"name": "run_shell_command", "arguments": {"command": "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}]
+
+This command will provide you with the current CPU usage on your Linux system. The output will show the percentage of CPU usage for user space, kernel space, and idle processes.
+2025-08-30 16:59:24,043 - __main__ - DEBUG - process_user_query:444 - Iteration 1 - Tool calls: [{'id': 'call_0', 'function': {'name': 'run_shell_command', 'arguments': {'command': "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}}}]
+2025-08-30 16:59:24,043 - __main__ - INFO - handle_function_call:399 - Function call: run_shell_command with arguments: {'command': "top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/\n//g'"}
+2025-08-30 16:59:24,043 - __main__ - INFO - execute_command:253 - Executing command: top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/
+//g'
+2025-08-30 16:59:24,067 - __main__ - INFO - execute_command:312 - Command completed in 0.02s with exit code 1
+2025-08-30 16:59:24,067 - __main__ - DEBUG - execute_command:316 - STDERR: sed: 1: "N;N;s/
+//g": unterminated substitute pattern
+invalid option or syntax: -bn1
+top usage: top
+		[-a | -d | -e | -c <mode>]
+		[-F | -f]
+		[-h]
+		[-i <interval>]
+		[-l <samples>]
+		[-ncols <columns>]
+		[-o <key>] [-O <secondaryKey>]
+			keys: pid (default), command, cpu, cpu_me, cpu_others, csw,
+				time, threads, ports, mregion, mem, rprvt, purg, vsize, vprvt,
+				kprvt, kshrd, pgrp, ppid, state, uid, wq, faults, cow, user,
+				msgsent, msgrecv, sysbsd, sysmach, pageins, boosts, instrs, cycl...
+2025-08-30 16:59:24,067 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 5 messages and 1 tools
+2025-08-30 16:59:24,067 - __main__ - DEBUG - generate_response:177 - Raw prompt: [AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] Based on the command results so far, do you need to run more diagnostic commands to fully answer the user's question: "check current CPU usage"? 
+
+If you have enough information to provide a complete answer, respond with "INVESTIGATION_COMPLETE". 
+If you need more information, suggest the next command to run and explain why.
+
+Current findings summary: 1 commands executed so far.. Use the run_shell_command function to execute the necessary commands. [/INST]
+2025-08-30 16:59:24,069 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-08-30 16:59:30,646 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 716
+2025-08-30 16:59:30,646 - __main__ - DEBUG - generate_response:190 - Ollama response:  The current CPU usage is not fully determined with just one command execution. To get a clearer picture of the CPU usage, I suggest running the following command: `top -bn1 | grep Cpu(s)`. This command will display the CPU usage in a more detailed format and should provide enough information to answer the user's question.
+
+After executing this command, if you still need more information, let me know, and I can help with further diagnostics.
+2025-08-30 16:59:30,646 - __main__ - DEBUG - _parse_tool_calls:136 - No TOOL_CALLS pattern found in response
+2025-08-30 16:59:30,646 - __main__ - DEBUG - process_user_query:524 - Continuing investigation: The current CPU usage is not fully determined with just one command execution. To get a clearer picture of the CPU usage, I suggest running the following command: `top -bn1 | grep Cpu(s)`. This command will display the CPU usage in a more detailed format and should provide enough information to answer the user's question.
+
+After executing this command, if you still need more information, let me know, and I can help with further diagnostics.
+2025-08-30 16:59:30,646 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 6 messages and 1 tools
+2025-08-30 16:59:30,646 - __main__ - DEBUG - generate_response:177 - Raw prompt: [AVAILABLE_TOOLS] [{"type": "function", "function": {"name": "run_shell_command", "description": "Run a shell command on the Linux system to diagnose issues or gather information", "parameters": {"type": "object", "properties": {"command": {"type": "string", "description": "The shell command to run (e.g., 'top -bn1', 'ps aux', 'df -h')"}}, "required": ["command"]}}}][/AVAILABLE_TOOLS][INST] Based on the command results so far, do you need to run more diagnostic commands to fully answer the user's question: "check current CPU usage"? 
+
+If you have enough information to provide a complete answer, respond with "INVESTIGATION_COMPLETE". 
+If you need more information, suggest the next command to run and explain why.
+
+Current findings summary: 1 commands executed so far.. Use the run_shell_command function to execute the necessary commands. [/INST]
+2025-08-30 16:59:30,648 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-08-30 16:59:36,869 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 727
+2025-08-30 16:59:36,870 - __main__ - DEBUG - generate_response:190 - Ollama response:  The current CPU usage is not fully determined with just one command execution. To get a clearer picture of the CPU usage, I suggest running the following command:
+
+```bash
+run_shell_command({"command": "top -bn1 -d1"})
+```
+
+This command will display the current system processes and their respective CPU usage in real-time for a brief moment. By executing this command, we can get an accurate snapshot of the current CPU usage on your Linux system.
+2025-08-30 16:59:36,870 - __main__ - DEBUG - _parse_tool_calls:136 - No TOOL_CALLS pattern found in response
+2025-08-30 16:59:36,870 - __main__ - DEBUG - process_user_query:443 - Iteration 2 - Assistant response: The current CPU usage is not fully determined with just one command execution. To get a clearer picture of the CPU usage, I suggest running the following command:
+
+```bash
+run_shell_command({"command": "top -bn1 -d1"})
+```
+
+This command will display the current system processes and their respective CPU usage in real-time for a brief moment. By executing this command, we can get an accurate snapshot of the current CPU usage on your Linux system.
+2025-08-30 16:59:36,870 - __main__ - DEBUG - process_user_query:444 - Iteration 2 - Tool calls: None
+2025-08-30 16:59:36,870 - __main__ - DEBUG - process_user_query:533 - No further commands needed
+2025-08-30 16:59:36,870 - __main__ - DEBUG - generate_response:160 - Sending request to Ollama with 7 messages and 0 tools
+2025-08-30 16:59:36,870 - __main__ - DEBUG - generate_response:177 - Raw prompt: [INST] Based on all the diagnostic commands executed, provide a CONCISE and CLEAR answer to the user's question: "check current CPU usage"
+
+Commands executed and their outputs:
+Command: top -bn1 | grep 'Cpu(s)' | sed 'N;N;s/
+//g'
+Result: Command failed (exit code: 1, time: 0.02s):
+
+STDOUT:
+
+
+STDERR:
+sed: 1: "N;N;s/
+//g": unterminated substitute pattern
+invalid option or syntax: -bn1
+top usage: top
+		[-a | -d | -e | -c <mode>]
+		[-F | -f]
+		[-h]
+		[-i <interval>]
+		[-l <samples>]
+		[-ncols <columns>]
+		[-o <key>] [-O <secondaryKey>]
+			keys: pid (default), command, cpu, cpu_me, cpu_others, csw,
+				time, threads, ports, mregion, mem, rprvt, purg, vsize, vprvt,
+				kprvt, kshrd, pgrp, ppid, state, uid, wq, faults, cow, user,
+				m...
+
+IMPORTANT: Analyze the ACTUAL command outputs above, not generic examples. 
+
+Please provide:
+1. A brief summary of key findings from the REAL data (2-3 sentences max)
+2. The specific answer based on ACTUAL numbers/results shown
+3. Any immediate action based on what the data actually shows (if applicable)
+
+Be specific - use the actual numbers, file names, process names, etc. from the command outputs. Keep it short, clear, and actionable.
+ [/INST]
+2025-08-30 16:59:36,871 - urllib3.connectionpool - DEBUG - _new_conn:241 - Starting new HTTP connection (1): localhost:11434
+2025-08-30 16:59:49,577 - urllib3.connectionpool - DEBUG - _make_request:544 - http://localhost:11434 "POST /api/generate HTTP/1.1" 200 926
+2025-08-30 16:59:49,577 - __main__ - DEBUG - generate_response:190 - Ollama response:  1. The `top` command, which is used to display system resource usage in real time, failed with an error. It seems there's a syntax issue with the provided command.
+
+2. Unfortunately, I cannot provide specific CPU usage based on the given output as it was an error message rather than actual data.
+
+3. To check current CPU usage, you should use the correct `top` command syntax:
+   ```
+   top -b -n 1
+   ```
+   This will display a one-time snapshot of the system's resource usage without continuously updating the screen. If you want to see updates every few seconds, replace `-n 1` with your preferred interval (e.g., `-n 5` for every 5 seconds).
+2025-08-30 16:59:49,578 - __main__ - DEBUG - _parse_tool_calls:136 - No TOOL_CALLS pattern found in response

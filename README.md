@@ -16,6 +16,25 @@
 
 ## 🚀 Installation
 
+### Prerequisites
+
+1. **System Requirements**:
+   - 8GB RAM minimum (16GB recommended)
+   - 5GB free disk space for model
+   - Python 3.8 or higher (`python3 --version` to check)
+   - Linux or macOS
+   - `curl` for quick install
+
+2. **Install Python Dependencies**:
+   ```bash
+   python3 -m pip install requests pathlib
+   ```
+
+3. **Install Ollama**:
+   - Visit https://ollama.ai/download
+   - Follow platform-specific instructions
+   - Verify with: `ollama --version`
+
 ### Quick Install
 ```bash
 # System-wide installation (requires sudo)
@@ -39,19 +58,65 @@ sudo ./install.sh
 # OR for user installation: ./install.sh --user
 ```
 
+### Post-Installation Setup
+
+1. **For User Installation**:
+   ```bash
+   # Add to PATH (if nudu command not found)
+   echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+   source ~/.bashrc
+   ```
+
+2. **Verify Installation**:
+   ```bash
+   # Check if nudu is available
+   nudu --version
+   
+   # Check logs directory
+   ls -la ~/.local/lib/nudu/logs/  # for user install
+   # OR
+   ls -la /usr/local/lib/nudu/logs/  # for system install
+   ```
+
 ## 🎯 Usage
 
 ### Setup
-```bash
-# 1. Start Ollama (if not already running)
-ollama serve
 
-# 2. Pull the AI model
-ollama pull mistral
+1. **Start Ollama Server**:
+   ```bash
+   # Start Ollama (if not already running)
+   ollama serve
+   ```
 
-# 3. Ask your questions!
-nudu why is my cpu slow?
-```
+2. **Download Model** (requires ~5GB disk space):
+   ```bash
+   # Pull the Mistral model (this will take a while)
+   ollama pull mistral
+   
+   # Verify model is available
+   ollama list
+   ```
+
+3. **System Requirements Check**:
+   - Ensure at least 4GB RAM available for model
+   - GPU acceleration available:
+     - Linux: NVIDIA GPU with CUDA
+     - macOS: Apple Silicon (M1/M2/M3) or Intel with Metal support
+
+4. **First Run**:
+   ```bash
+   # Test with a simple query
+   nudu "show me disk usage"
+   ```
+
+5. **Check Logs** (if issues occur):
+   ```bash
+   # For user installation
+   tail -f ~/.local/lib/nudu/logs/linux_assistant.log
+   
+   # For system installation
+   sudo tail -f /usr/local/lib/nudu/logs/linux_assistant.log
+   ```
 
 ### Basic Commands
 ```bash
@@ -132,21 +197,52 @@ Immediate actions:
 
 ## 🐛 Troubleshooting
 
-**"Cannot connect to Ollama"**
-```bash
-ollama serve
-```
+### Common Issues
 
-**"Model not found"**
-```bash
-ollama pull mistral
-```
+1. **"Cannot connect to Ollama"**
+   ```bash
+   # Start Ollama server
+   ollama serve
+   
+   # Check if server is responding
+   curl http://localhost:11434/api/tags
+   ```
 
-**"Command not found: nudu"**
-```bash
-# Reinstall
-curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash -s -- --user
-```
+2. **"Model not found"**
+   ```bash
+   # List available models
+   ollama list
+   
+   # Pull the model if missing
+   ollama pull mistral
+   
+   # Check model details
+   ollama show mistral
+   ```
+
+3. **"Command not found: nudu"**
+   ```bash
+   # For user installation
+   echo 'export PATH="$PATH:$HOME/.local/bin"' >> ~/.bashrc
+   source ~/.bashrc
+   
+   # OR Reinstall
+   curl -sSL https://raw.githubusercontent.com/ydyazeed/Linux-ai-assistant/main/install.sh | bash -s -- --user
+   ```
+
+4. **"Out of memory" or Slow Performance**
+   - Ensure at least 4GB RAM available
+   - Check GPU/Metal acceleration:
+     ```bash
+     # Look for "Metal" or "CUDA" in logs
+     tail -f ~/.local/lib/nudu/logs/linux_assistant.log
+     ```
+   - Try restarting Ollama: `pkill ollama && ollama serve`
+
+5. **Platform-Specific Notes**
+   - **Linux**: Most commands work out of the box
+   - **macOS**: Some commands like `free`, `iostat` may not be available
+   - **Both**: Check logs for command execution errors
 
 ## 📄 License
 
